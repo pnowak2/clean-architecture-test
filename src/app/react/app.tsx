@@ -11,13 +11,15 @@ import { RemoveTodoUseCase } from '../../features/todo/domain/usecase/remove-tod
 import { MarkTodoAsCompletedUseCase } from '../../features/todo/domain/usecase/mark-todo-as-complete.usecase';
 import { MarkTodoAsIncompletedUseCase } from '../../features/todo/domain/usecase/mark-todo-as-incomplete.usecase';
 import { TodoPresenter } from '../../features/todo/presentation/todo.presenter';
+import { TodoLocalStorageRepository } from '../../features/todo/data/repository/localstorage/todo.localstorage.repository';
 
 const inMemoryTodoRepo: TodoRepository = new TodoInMemoryRepository();
-const getAllTodosUC: GetAllTodosUseCase = new GetAllTodosUseCase(inMemoryTodoRepo);
+const localStorageTodoRepo: TodoRepository = new TodoLocalStorageRepository(window.localStorage);
+const getAllTodosUC: GetAllTodosUseCase = new GetAllTodosUseCase(localStorageTodoRepo);
 const getCompletedTodosUC: GetCompletedTodosUseCase = new GetCompletedTodosUseCase(inMemoryTodoRepo);
 const getIncompletedTodosUC: GetIncompletedTodosUseCase = new GetIncompletedTodosUseCase(inMemoryTodoRepo);
 const searchTodosUC: SearchTodosUseCase = new SearchTodosUseCase(inMemoryTodoRepo);
-const addTodoUC: AddTodoUseCase = new AddTodoUseCase(inMemoryTodoRepo);
+const addTodoUC: AddTodoUseCase = new AddTodoUseCase(localStorageTodoRepo);
 const getTodoByIdUC: GetTodoByIdUseCase = new GetTodoByIdUseCase(inMemoryTodoRepo);
 const removeTodoUC: RemoveTodoUseCase = new RemoveTodoUseCase(inMemoryTodoRepo);
 const markTodoAsCompletedUC: MarkTodoAsCompletedUseCase = new MarkTodoAsCompletedUseCase(inMemoryTodoRepo);
