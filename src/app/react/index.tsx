@@ -1,11 +1,11 @@
 // import { ConsoleApp } from "./app/console/console.app";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { App } from "./app/react/app";
+import { App } from "./app";
 
 // new ConsoleApp().run();
 
 ReactDOM.render(
-    <App title="app" paragraph="welcome"/>,
+    <App title="app" paragraph="welcome!"/>,
     document.getElementById('app')
 );
