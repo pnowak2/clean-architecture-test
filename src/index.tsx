@@ -6,6 +6,6 @@ import { App } from "./app/react/app";
 // new ConsoleApp().run();
 
 ReactDOM.render(
-    <App />,
+    <App title="app" paragraph="welcome"/>,
     document.getElementById('app')
 );
