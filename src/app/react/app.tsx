@@ -54,10 +54,17 @@ function getTodos() {
   })
 }
 
+function addTodo() {
+  addTodoUC.execute('new' + Math.random()).subscribe(todo => {
+    console.log('todo added:', todo);
+  });
+}
+
 export const App = ({ title, paragraph }: CardProps) => (
   <div>
     {title}, {paragraph}
     <button onClick={getTodos}>Get Todos!</button>
+    <button onClick={addTodo}>Add todo</button>
 
   </div>
 )
