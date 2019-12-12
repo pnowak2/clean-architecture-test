@@ -15,6 +15,7 @@ import { MarkTodoAsCompletedUseCase } from "../features/todo/domain/usecase/mark
 import { MarkTodoAsIncompletedUseCase } from "../features/todo/domain/usecase/mark-todo-as-incomplete.usecase";
 import { GetCompletedTodosUseCase } from "../features/todo/domain/usecase/get-completed-todos.usecase";
 import { GetIncompletedTodosUseCase } from "../features/todo/domain/usecase/get-incompleted-todos.usecase";
+import { screen, box, checkbox, program } from "blessed";
 
 export class ConsoleApp {
   todoPresenter: TodoPresenter;
@@ -50,9 +51,65 @@ export class ConsoleApp {
     this.userPresenter = new UserPresenter(getAllUsersUC);
 
     this.todoPresenter.todos$.subscribe(todos => {
-      console.log('todos:', todos);
-    });
+      const prg = program();
 
+      prg.key('q', () => {
+        chk.uncheck();
+        // prg.clear();
+        // prg.disableMouse();
+        // prg.showCursor();
+        // prg.normalBuffer();
+        // process.exit(0);
+      });
+
+      const scr = screen({
+        smartCSR: true
+      });
+
+      scr.title = 'my window title';
+
+      const bx = box({
+        top: 'center',
+        left: 'center',
+        width: '50%',
+        height: '50%',
+        content: 'Hello {bold}world{/bold}!' + todos,
+        tags: true,
+        border: {
+          type: 'line'
+        },
+        style: {
+          fg: 'white',
+          bg: 'magenta',
+          border: {
+            fg: '#f0f0f0'
+          },
+          hover: {
+            bg: 'green'
+          }
+        }
+      });
+
+      // Append our box to the screen.
+      scr.append(bx);
+      const chk = checkbox({
+        checked: true,
+        mouse: true,
+      });
+
+      chk.on('click', (el) => {
+        chk.toggle();
+        chk.uncheck();
+      });
+
+      bx.append(chk);
+
+      bx.focus();
+
+      // Render the screen.
+      scr.render();
+    });
+    
     this.todoPresenter.todo$.subscribe(todos => {
       console.log('todo:', todos);
     });
@@ -78,7 +135,7 @@ export class ConsoleApp {
 
     // this.todoPresenter.getCompletedTodos();
     this.todoPresenter.getIncompletedTodos();
-    
+
     this.userPresenter.getAllUsers();
 
     this.todoPresenter.onDestroy();
