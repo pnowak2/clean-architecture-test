@@ -17,6 +17,10 @@ export class TodoPresenter extends Presenter {
       map(state => state.todos)
     );
 
+  todosCount$: Observable<number> = this.todos$.pipe(
+    map(todos => todos.length)
+  );
+
   constructor(
     private getAllTodosUC: GetAllTodosUseCase,
     private addTodoUC: AddTodoUseCase,

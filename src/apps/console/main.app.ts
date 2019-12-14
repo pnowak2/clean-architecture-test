@@ -11,13 +11,11 @@ import { AddTodoUseCase } from "../../features/todo/domain/usecase/add-todo.usec
 
 export class ConsoleApp {
   todos$: Observable<Array<Todo>>;
+  todosCount$: Observable<number>;
+
   todoPresenter: TodoPresenter;
 
   constructor() {
-    const localStorageService: LocalStorageService = new LocalStorageBrowserService(
-      window.localStorage
-    );
-    const localStorageTodoRepo: TodoRepository = new TodoLocalStorageRepository(localStorageService);
     const inMemoryTodoRepo: TodoRepository = new TodoInMemoryRepository();
     const getAllTodosUC: GetAllTodosUseCase = new GetAllTodosUseCase(inMemoryTodoRepo);
     const addTodoUC: AddTodoUseCase = new AddTodoUseCase(inMemoryTodoRepo);
@@ -26,12 +24,25 @@ export class ConsoleApp {
       addTodoUC
     );
     this.todos$ = this.todoPresenter.todos$;
+    this.todosCount$ = this.todoPresenter.todosCount$;
   }
 
   run() {
     this.todos$.subscribe(todos => {
-      console.log('got todos', todos);
+      const todosEl = document.querySelector('#todos');
+      todosEl.innerHTML = '';
+
+      todos.forEach(todo => {
+        const todoEl = document.createElement('li');
+        todoEl.textContent = todo.name;
+        todosEl.appendChild(todoEl);
+      });
     });
+
+    this.todosCount$.subscribe(todosCount => {
+      const todosCountEl = document.querySelector('#todosCount');
+      todosCountEl.textContent = todosCount + '';
+    })
 
     document.querySelector('#getAllTodos').addEventListener('click', () => {
       this.todoPresenter.getAllTodos();
