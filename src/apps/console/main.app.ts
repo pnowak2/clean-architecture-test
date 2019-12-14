@@ -16,6 +16,7 @@ export class ConsoleApp {
   todoPresenter: TodoPresenter;
 
   constructor() {
+    // Dependency injection configuration
     const inMemoryTodoRepo: TodoRepository = new TodoInMemoryRepository();
     const getAllTodosUC: GetAllTodosUseCase = new GetAllTodosUseCase(inMemoryTodoRepo);
     const addTodoUC: AddTodoUseCase = new AddTodoUseCase(inMemoryTodoRepo);
@@ -23,11 +24,12 @@ export class ConsoleApp {
       getAllTodosUC,
       addTodoUC
     );
+
+    // View observables binding
     this.todos$ = this.todoPresenter.todos$;
     this.todosCount$ = this.todoPresenter.todosCount$;
-  }
 
-  run() {
+    // Presenter reactive subscriptions 
     this.todos$.subscribe(todos => {
       const todosEl = document.querySelector('#todos');
       todosEl.innerHTML = '';
@@ -42,7 +44,13 @@ export class ConsoleApp {
     this.todosCount$.subscribe(todosCount => {
       const todosCountEl = document.querySelector('#todosCount');
       todosCountEl.textContent = todosCount + '';
-    })
+    });
+  }
+
+  run() {
+    // UI Events/Code
+
+    this.todoPresenter.getAllTodos();
 
     document.querySelector('#getAllTodos').addEventListener('click', () => {
       this.todoPresenter.getAllTodos();
