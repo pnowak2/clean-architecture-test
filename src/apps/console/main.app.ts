@@ -21,6 +21,8 @@ export class ConsoleApp {
   }
 
   run() {
-    this.todoPresenter.getAllTodos();
+    this.todoPresenter.getAllTodos().subscribe(todos => {
+      console.log('todos', todos);
+    });
   }
 }
